@@ -1,5 +1,4 @@
-# Online Python compiler (interpreter) to run Python online.
-# Write Python 3 code in this online editor and run it.
+#Write a program that helps seat audiences in a flight based on the following input and rules.
 
 from array import *
 seatDimensions = [[3,2],[4,3],[2,3],[3,4]]
