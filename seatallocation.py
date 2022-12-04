@@ -1,119 +1,119 @@
-#Write a program that helps seat audiences in a flight based on the following input and rules.
-
 from array import *
-seatDimensions = [[3,2],[4,3],[2,3],[3,4]]
-passengerCount = 30
 
-resultArray = []
 
-maxRowCount = 0
+class FlightSeatAllocation:
+    def __init__(self):
+        self.passenger_count = 30
+        self.cols_rows_list = [[3, 2], [4, 3], [2, 3], [3, 4]]
+        self.seating_arrangement = []
+        self.counter = 0
+        self.max_row_count = 0
+        self.empty_seat = -1
+        for l in self.cols_rows_list:
+            c = l[0]
+            r = l[1]
+            grid = []
+            if (self.max_row_count < r):
+                self.max_row_count = r
+            for i in range(r):
+                grid_row = []
+                for j in range(c):
+                    grid_row.append(self.empty_seat)
+                grid.append(grid_row)
+            self.seating_arrangement.append(grid)
 
-allocatedCount = 0
+    def seat(self):
+        self.seat_aisle()
+        self.seat_window()
+        self.seat_middle()
+        # return self.seating_arrangement
 
-def fillResultArray(resultArray):
-    maxRowCount = 0
-    for seatDimension in seatDimensions:
-        if(maxRowCount < seatDimension[1]):
-            maxRowCount = seatDimension[1]
-        resultArray.append([[0 for _ in range(seatDimension[0])] for _ in range(seatDimension[1])])
-    #print(resultArray)
-    return resultArray, maxRowCount
-    
-resultArray, maxRowCount = fillResultArray(resultArray)
+    def seat_aisle(self):
+        seat_group_count = len(self.seating_arrangement)
 
-print(maxRowCount)
-
-def fillAsileSeats(resultArray, allocatedCount):
-    seatGroupCount = len(resultArray)
-    
-    if(seatGroupCount > 1):
-        for i in range(maxRowCount):
-            if(allocatedCount >= passengerCount):
-                break
-            
-            for j in range(seatGroupCount):
-                if(allocatedCount >= passengerCount):
+        if (seat_group_count > 1):
+            for i in range(self.max_row_count):
+                if (self.counter >= self.passenger_count):
                     break
-                
-                seatGroup = resultArray[j]
-                if(i < len(seatGroup)):
-                    row = seatGroup[i]
-                    #print(row)
-                    if(j == 0):
-                        rightColumnINdex = len(seatGroup[0]) - 1
-                        if(rightColumnINdex > 0):
-                            allocatedCount = allocatedCount + 1
-                            row[rightColumnINdex] = allocatedCount
-                    elif(j == seatGroupCount-1):
-                        rightColumnINdex = len(seatGroup[0]) - 1
-                        if(rightColumnINdex > 0):
-                            allocatedCount = allocatedCount + 1
-                            row[0] = allocatedCount
-                    else:
-                        seatCount = len(row)
-                        if(seatCount == 1):
-                            allocatedCount = allocatedCount + 1
-                            row[0] = allocatedCount
+
+                for j in range(seat_group_count):
+                    if (self.counter >= self.passenger_count):
+                        break
+
+                    seat_group = self.seating_arrangement[j]
+                    if (i < len(seat_group)):
+                        r = seat_group[i]
+                        if (j == 0):
+                            right_column_index = len(seat_group[0]) - 1
+                            if (right_column_index > 0):
+                                self.counter = self.counter + 1
+                                r[right_column_index] = self.counter
+                        elif (j == seat_group_count - 1):
+                            right_column_index = len(seat_group[0]) - 1
+                            if (right_column_index > 0):
+                                self.counter = self.counter + 1
+                                r[0] = self.counter
                         else:
-                            allocatedCount = allocatedCount + 1
-                            row[0] = allocatedCount
-                            allocatedCount = allocatedCount + 1
-                            row[seatCount - 1] = allocatedCount
-                        
-    return resultArray, allocatedCount
+                            seat_count = len(r)
+                            if (seat_count == 1):
+                                self.counter = self.counter + 1
+                                r[0] = self.counter
+                            else:
+                                self.counter = self.counter + 1
+                                r[0] = self.counter
+                                self.counter = self.counter + 1
+                                r[seat_count - 1] = self.counter
 
-def fillWindowSeats(resultArray, allocatedCount):
-    seatGroupCount = len(resultArray)
-    
-    if(seatGroupCount > 1):
-        for i in range(maxRowCount):
-            if(allocatedCount >= passengerCount):
-                break
-            
-            for j in range(seatGroupCount):
-                if(allocatedCount >= passengerCount):
-                    break
-                
-                seatGroup = resultArray[j]
-                if(i < len(seatGroup)):
-                    row = seatGroup[i]
-                    if(j == 0):
-                        allocatedCount = allocatedCount + 1
-                        row[0] = allocatedCount
-                    elif(j == seatGroupCount-1):
-                        allocatedCount = allocatedCount + 1
-                        row[-1] = allocatedCount
-                    
-                        
-    return resultArray, allocatedCount     
-    
-def fillMiddleSeats(resultArray, allocatedCount):
-    seatGroupCount = len(resultArray)
-    
-    if(seatGroupCount > 1):
-        for i in range(maxRowCount):
-            if(allocatedCount >= passengerCount):
-                break
+    def seat_window(self):
+        seat_group_count = len(self.seating_arrangement)
 
-            for j in range(seatGroupCount):
-                if(allocatedCount >= passengerCount):
+        if (seat_group_count > 1):
+            for i in range(self.max_row_count):
+                if (self.counter >= self.passenger_count):
                     break
-                
-                seatGroup = resultArray[j]
-                if(i < len(seatGroup)):
-                    row = seatGroup[i]
-                    seatCount = len(row)
-                    for seatIndex in range(seatCount):
-                        if(allocatedCount >= passengerCount):
+
+                for j in range(seat_group_count):
+                    if (self.counter >= self.passenger_count):
+                        break
+
+                    seat_group = self.seating_arrangement[j]
+                    if (i < len(seat_group)):
+                        row = seat_group[i]
+                        if (j == 0):
+                            self.counter = self.counter + 1
+                            row[0] = self.counter
+                        elif (j == seat_group_count - 1):
+                            self.counter = self.counter + 1
+                            row[-1] = self.counter
+
+    def seat_middle(self):
+        seat_group_count = len(self.seating_arrangement)
+        for i in range(self.max_row_count):
+            if (self.counter >= self.passenger_count):
+                break
+            for seat_group in self.seating_arrangement:
+                if (self.counter >= self.passenger_count):
+                    break
+                if (i < len(seat_group)):
+                    r = seat_group[i]
+                    seat_count = len(r)
+                    for c in range(seat_count):
+                        if (self.counter >= self.passenger_count):
                             break
-                        if(row[seatIndex] == 0):
-                            allocatedCount = allocatedCount + 1
-                            row[seatIndex] = allocatedCount
-                        
-    return resultArray, allocatedCount
-resultArray, allocatedCount = fillAsileSeats(resultArray, allocatedCount)
-resultArray, allocatedCount = fillWindowSeats(resultArray, allocatedCount)
-resultArray, allocatedCount = fillMiddleSeats(resultArray, allocatedCount)
+                        if (r[c] == self.empty_seat):
+                            self.counter = self.counter + 1
+                            r[c] = self.counter
+
+    def printSA(self):
+        print(self.seating_arrangement)
 
 
-print(resultArray)
+if __name__ == '__main__':
+    f = FlightSeatAllocation()
+    f.seat()
+    f.printSA()
+
+
+
+
+
