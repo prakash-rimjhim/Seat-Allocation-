@@ -1,0 +1,26 @@
+import unittest
+
+import flight_seat_allocation
+
+class TestSittingAllocation(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    # sample test
+    def test_1(self):
+        passengerCount = 12
+        cols_rows_list = [[3,3],[3,2]]
+        seating_arrangement = flight_seat_allocation.FlightSeatAllocation.seating_arrangement(passengerCount,cols_rows_list)
+        expectec_seat_arrangement = [[6,11,1],[2,12,7],[8,-1,3],[4,0,9],[10,-1,5]]
+        self.assertEqual(seating_arrangement, expectec_seat_arrangement)
+
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+
+
+
